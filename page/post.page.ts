@@ -8,6 +8,8 @@ export default class PostPage {
         this.page = page;
     }
 
+    //selectores
+
     public get eleNewPostLink() {
         const newPostLink = this.page.$("text='New post'");
         if(newPostLink != null) {
@@ -17,9 +19,23 @@ export default class PostPage {
         }
     }
 
+    
+
+    //actuadores
+
     public async clickNewPostLink() {
         const ele = await this.eleNewPostLink;
         await ele?.click();
         await this.page.waitForLoadState();
     }
+
+    public async getElePostTitle(postTitle:string) {
+        const selectedPostTitle = this.page.$(`//o/h3[text()='${postTitle}']`)
+        if(selectedPostTitle != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

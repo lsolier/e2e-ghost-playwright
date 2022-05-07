@@ -8,6 +8,8 @@ export default class HomePage {
         this.page = page;
     }
 
+    //selectores
+
     public get elePostsLink() {
         const postsLink = this.page.$("text='Posts'");
         if(postsLink != null) {
@@ -43,6 +45,8 @@ export default class HomePage {
             throw new Error("No staffLink element");
         }
     }
+
+    //actuadores
 
     public async clickPostsLink() {
         const ele = await this.elePostsLink;

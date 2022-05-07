@@ -24,9 +24,8 @@ describe("Login", () => {
 
     test("should sing up - positive scenario", async () => {
 
-
         //WHEN type the user and password
-        await login.singInWith(Env.user, Env.pass);
+        await login.signInWith(Env.user, Env.pass);
 
         //THEN I expected to see the site
         expect(page.url()).toBe("http://localhost:2368/ghost/#/site");

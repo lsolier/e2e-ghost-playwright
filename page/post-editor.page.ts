@@ -7,6 +7,8 @@ export default class PostEditorPage {
         this.page = page;
     }
 
+    //selectores
+
     public get eleTitle() {
         const title = this.page.$("textarea[placeholder='Post Title']");
         if(title != null) {
@@ -16,12 +18,12 @@ export default class PostEditorPage {
         }
     }
 
-    public get eleDescription() {
-        const description = this.page.$("div[data-kg='editor']");
+    public get eleContent() {
+        const description = this.page.$("div[data-placeholder='Begin writing your post...']");
         if(description != null) {
             return description;
         } else {
-            throw new Error("No description element");
+            throw new Error("No content element");
         }
     }
 
@@ -60,4 +62,32 @@ export default class PostEditorPage {
             throw new Error("No viewPost element");
         }
     }
+
+    //actuadores
+
+    public async fillPostTitle(title:string){
+        const titleArea = await this.eleTitle;
+        await titleArea?.fill(title);
+    }
+
+    public async fillPostContent(title:string){
+        const contentArea = await this.eleContent;
+        await contentArea?.fill(title);
+    }
+
+    public async clickPublishLink(){
+        const publishLink = await this.elePublishLink;
+        await publishLink?.click();
+    }
+
+    public async clickPublishButton(){
+        const publishButton = await this.elePublishBtn;
+        await publishButton?.click()
+    }
+
+    public async clickPostsLink(){
+        const postsLink = await this.elePostsLink;
+        await postsLink?.click()
+    }
+
 }

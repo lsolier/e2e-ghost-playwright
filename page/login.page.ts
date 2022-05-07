@@ -8,6 +8,8 @@ export default class LoginPage {
         this.page = page;
     }
 
+    //selectores
+
     public get eleEmailAddressTextField() {
         const emailAddressText = this.page.waitForSelector("input[placeholder='Email Address']");
         if(emailAddressText != null) {
@@ -26,6 +28,7 @@ export default class LoginPage {
         }
     }
 
+    
     public get eleLoginBtn() {
         const loginBtn = this.page.waitForSelector("//span[text()[normalize-space()='Sign in']]");
         if(loginBtn != null) {
@@ -34,6 +37,8 @@ export default class LoginPage {
             throw new Error("No loginBtn element");
         }
     }
+
+    //actuadores
 
     public async enterEmailAddress(user:string) {
         const ele = await this.eleEmailAddressTextField;
@@ -45,15 +50,15 @@ export default class LoginPage {
         await ele?.fill(pass);
     }
 
-    public async clickSingIn() {
+    public async clickSignIn() {
         const ele = await this.eleLoginBtn;
         await ele?.click();
     }
 
-    public async singInWith(user:string, pass:string) {
+    public async signInWith(user:string, pass:string) {
         await this.enterEmailAddress(user);
         await this.enterPassword(pass);
-        await this.clickSingIn();
+        await this.clickSignIn();
         await this.page.waitForNavigation();
     }
 }
