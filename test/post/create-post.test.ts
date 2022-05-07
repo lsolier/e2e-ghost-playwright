@@ -11,7 +11,7 @@ describe("Create a post", () => {
     let context: BrowserContext;
     let page: Page;
 
-    //My page
+    //My pages
     let login: LoginPage;
     let home: HomePage;
     let post: PostPage;
@@ -32,13 +32,13 @@ describe("Create a post", () => {
     });
 
     test("shoul create a post - positive scenario", async () => {
-        await login.signInWith(Env.user, Env.pass);
+        await login.singInWith(Env.user, Env.pass);
         await home.clickPostsLink();
         expect(page.url()).toBe("http://localhost:2368/ghost/#/posts");
         await post.clickNewPostLink();
         expect(page.url()).toBe("http://localhost:2368/ghost/#/editor/post");
         //await postEditor.
-        await browser.close();
+        //await browser.close();
     });
 
 });
