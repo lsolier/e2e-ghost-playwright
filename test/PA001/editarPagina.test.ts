@@ -27,7 +27,9 @@ describe("Create a post", () => {
 
         await page.goto(Env.baseUrl + Env.adminSection);
         login = new LoginPage(page);
-
+        home = new HomePage(page);
+        posts = new PostPage(page);
+        postEditor = new PostEditorPage(page);
     });
 
     test("should create a post - positive scenario", async () => {
@@ -40,10 +42,8 @@ describe("Create a post", () => {
         await postEditor.fillPostContent("ContenidoPrueba");
         await postEditor.clickPublishLink();
         await postEditor.clickPostsLink();
-        expect(posts.getElePostTitle("TituloPrueba")).toBe(true);
-        //await postEditor.
+        expect(await posts.getElePostTitle("TituloPrueba")).toBe(true);
         await browser.close();
     });
-
 
 });

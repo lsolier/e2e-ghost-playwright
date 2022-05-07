@@ -31,11 +31,7 @@ export default class PostPage {
 
     public async getElePostTitle(postTitle:string) {
         const selectedPostTitle = this.page.$(`//o/h3[text()='${postTitle}']`)
-        if(selectedPostTitle != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return selectedPostTitle != null;
     }
 
 }
