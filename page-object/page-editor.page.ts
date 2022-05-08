@@ -81,6 +81,15 @@ export default class PageEditorPage {
         }
     }
 
+    public get eleErrorMessage() {
+        const errorMessage = this.page.$("Error");
+        if(errorMessage != null) {
+            return errorMessage;
+        } else {
+            throw new Error("No viewPost element");
+        }
+    }
+
     //actuadores
     public async fillPageTitle(title:string){
         const titleArea = await this.eleTitle;
@@ -118,6 +127,12 @@ export default class PageEditorPage {
         const postsLink = await this.elePagesLink;
         await postsLink?.click();
         await this.page.waitForLoadState();
+    }
+
+    public async findErrorMessage() {
+        const errorMessage = await this.eleErrorMessage;
+        console.log("Error message: " + errorMessage);
+        return errorMessage;
     }
 
 }
