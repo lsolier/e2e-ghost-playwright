@@ -1,6 +1,6 @@
 import { Page } from "playwright";
 
-export default class PageGhostPage {
+export default class TagPage {
 
     private page: Page;
 
@@ -10,8 +10,8 @@ export default class PageGhostPage {
 
     //selectores
 
-    public get eleNewPageLink() {
-        const newPageLink = this.page.$("text='New page'");
+    public get eleNewTagLink() {
+        const newPageLink = this.page.$("text='New tag'");
         if(newPageLink != null) {
             return newPageLink;
         } else {
@@ -19,7 +19,7 @@ export default class PageGhostPage {
         }
     }
 
-    public async pagesList() {
+    public async tagsList() {
         await this.page.waitForSelector(`section ol li`);
         const pages = await this.page.$$(`section ol li`);
         if(pages != null) {
@@ -29,23 +29,22 @@ export default class PageGhostPage {
         }
     }
 
-
     //actuadores
 
-    public async clickNewPageLink() {
-        const ele = await this.eleNewPageLink;
+    public async clickNewTagLink() {
+        const ele = await this.eleNewTagLink;
         await ele?.click();
-        await this.page.waitForURL('**/#/editor/page');
+        await this.page.waitForURL('**/#/tags/new');
     }
 
     public async findPageByTitle(pageTitle: string) {
-        const pagesGhost = await this.pagesList();
-        console.log("Total pages: " + pagesGhost.length);
-        const allHref = await Promise.all(pagesGhost
-            .map(async (pageGhost, i) => {
-                const elementText = await pageGhost.innerText();
+        const tags = await this.tagsList();
+        console.log("Total tags: " + (tags.length-1));
+        const allHref = await Promise.all(tags
+            .map(async (tag, i) => {
+                const elementText = await tag.innerText();
                 if(elementText.includes(pageTitle)) {
-                    return await pageGhost.$("a.gh-post-list-title");
+                    return await tag.$("a.gh-tag-list-title");
                 }
             })
         );
@@ -56,9 +55,8 @@ export default class PageGhostPage {
 
     public async navigateToEditionLink(link: any) {
         const href = await link.getAttribute("href");
-        const formattedHref = href.substring(0,href.length-1)
+        const formattedHref = href.substring(0,href.length-1);
         await link.click();
         await this.page.waitForURL(`**/${formattedHref}`);
     }
-
 }

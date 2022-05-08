@@ -63,7 +63,7 @@ export default class HomePage {
     public async clickTagsLink() {
         const ele = await this.eleTagsLink;
         await ele?.click();
-        await this.page.waitForNavigation();
+        await this.page.waitForURL('**/#/tags');
     }
 
     public async clickStaffLink() {
