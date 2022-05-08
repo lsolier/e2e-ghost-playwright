@@ -45,6 +45,15 @@ export default class PostEditorPage {
         }
     }
 
+    public get eleSettingButton() {
+        const settingButton = this.page.$("//button[@title='Settings']");
+        if(settingButton != null) {
+            return settingButton;
+        } else {
+            throw new Error("No SettingButton element");
+        }
+    }
+
     public get elePublishBtn() {
         const publishButton = this.page.waitForSelector("button.gh-publishmenu-button");
         if(publishButton != null) {
@@ -81,6 +90,42 @@ export default class PostEditorPage {
         }
     }
 
+    public get eleTagComboBoxInput() {
+        const tagComboBox = this.page.$("div.ember-basic-dropdown-trigger--in-place.ember-power-select-multiple-trigger");
+        if(tagComboBox != null) {
+            return tagComboBox;
+        } else {
+            throw new Error("No tagComboBox element");
+        }
+    }
+
+    public get tagList() {
+        const tagComboBox = this.page.$$("div ul li");
+        if(tagComboBox != null) {
+            return tagComboBox;
+        } else {
+            throw new Error("No tagComboBox element");
+        }
+    }
+
+    public get eleCloseSetting() {
+        const closeSetting = this.page.$("button[aria-label='Close']");
+        if(closeSetting != null) {
+            return closeSetting;
+        } else {
+            throw new Error("No closeSetting element");
+        }
+    }
+
+    public get eleFormSetting() {
+        const formSetting = this.page.$("div.settings-menu-container");
+        if(formSetting != null) {
+            return formSetting;
+        } else {
+            throw new Error("No FormSetting element");
+        }
+    }
+
     //actuadores
     public async fillPostTitle(title:string){
         const titleArea = await this.eleTitle;
@@ -90,6 +135,12 @@ export default class PostEditorPage {
     public async fillPostContent(title:string){
         const contentArea = await this.eleContent;
         await contentArea?.fill(title);
+    }
+
+    public async clickSettingButton(){
+        const publishLink = await this.eleSettingButton;
+        await publishLink?.click();
+        await this.page.waitForSelector("//label[text()='Tags']")
     }
 
     public async clickPublishLink(){
@@ -123,6 +174,36 @@ export default class PostEditorPage {
         await scheduleTime?.click();
         await scheduleTime?.fill(hour + ":" + minToPublish);
         await this.clickScheduleButton();
+    }
+
+    public async selectTagWithName(tagName: string) {
+        const tagComboBoxInput = await this.eleTagComboBoxInput;
+        await tagComboBoxInput?.click();
+        await this.page.waitForSelector("//ul[@role='listbox']");
+        const tagList = await this.tagList;
+        console.log("Total tags: " + tagList.length);
+
+        const allTagsInDropDown = await Promise.all(tagList
+            .map(async (tag, i) => {
+                const elementText = await tag.innerText();
+                if(elementText.includes(tagName)) {
+                    return tag;
+                }
+            })
+        );
+
+        const filteredAllTagsInDropDown = allTagsInDropDown.filter(elm => elm);
+        console.log("ver: " + await filteredAllTagsInDropDown[0]?.innerText());
+        await filteredAllTagsInDropDown[0]?.click();
+        await this.page.waitForSelector("button[aria-label='Close']");
+    }
+
+    public async clickCloseSetting() {
+        const closeSetting = await this.eleCloseSetting;
+        await closeSetting?.click();
+        const formSetting = await this.eleFormSetting;
+        await formSetting?.evaluate(node => node.setAttribute("style", "display: none"));
+        await this.page.waitForSelector("//span[text()='Publish']");
     }
 
 }
