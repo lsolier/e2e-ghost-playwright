@@ -19,6 +19,14 @@ export default class PostPage {
         }
     }
 
+    public selectedPostTitle(postTitle:string) {
+        const selectedPostTitle = this.page.$(`//*[contains(text(), '${postTitle}')]`);
+        if(selectedPostTitle != null) {
+            return selectedPostTitle;
+        } else {
+            throw new Error("No selectedPostTitle element");
+        }
+    }
     
 
     //actuadores
@@ -30,7 +38,7 @@ export default class PostPage {
     }
 
     public async getElePostTitle(postTitle:string) {
-        const selectedPostTitle = this.page.$(`//o/h3[text()='${postTitle}']`)
+        const selectedPostTitle = await this.selectedPostTitle(postTitle);
         return selectedPostTitle != null;
     }
 
