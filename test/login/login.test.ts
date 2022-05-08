@@ -1,8 +1,9 @@
-import { Browser, BrowserContext, chromium, Page } from "playwright";
+import {Browser, BrowserContext, chromium, Page} from "playwright";
 import LoginPage from "../../page/login.page";
 import Env from "../../util/environment";
+import { test, expect } from '@playwright/test';
 
-describe("Login", () => {
+test.describe("Login", () => {
 
     let browser: Browser;
     let context: BrowserContext;
@@ -11,7 +12,7 @@ describe("Login", () => {
     //My pages
     let login: LoginPage;
 
-    beforeAll( async () => {
+    test.beforeAll( async () => {
         browser = await chromium.launch({
             headless: Env.headless
         });

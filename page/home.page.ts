@@ -51,7 +51,7 @@ export default class HomePage {
     public async clickPostsLink() {
         const ele = await this.elePostsLink;
         await ele?.click();
-        await this.page.waitForNavigation();
+        await Promise.all([this.page.waitForNavigation(),]);
     }
 
     public async clickPagesLink() {

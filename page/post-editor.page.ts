@@ -37,7 +37,7 @@ export default class PostEditorPage {
     }
 
     public get elePublishLink() {
-        const publishLink = this.page.$("//span[text()='Publish']");
+        const publishLink = this.page.locator(`//div[contains(@class, 'gh-btn gh-btn-outline gh-publishmenu-trigger')]`);
         if(publishLink != null) {
             return publishLink;
         } else {
@@ -46,7 +46,7 @@ export default class PostEditorPage {
     }
 
     public get elePublishBtn() {
-        const publishButton = this.page.$("button.gh-publishmenu-button");
+        const publishButton = this.page.waitForSelector("button.gh-publishmenu-button");
         if(publishButton != null) {
             return publishButton;
         } else {
@@ -64,7 +64,6 @@ export default class PostEditorPage {
     }
 
     //actuadores
-
     public async fillPostTitle(title:string){
         const titleArea = await this.eleTitle;
         await titleArea?.fill(title);
@@ -82,12 +81,13 @@ export default class PostEditorPage {
 
     public async clickPublishButton(){
         const publishButton = await this.elePublishBtn;
-        await publishButton?.click()
+        await publishButton?.click();
+
     }
 
     public async clickPostsLink(){
         const postsLink = await this.elePostsLink;
-        await postsLink?.click()
+        await postsLink?.click();
     }
 
 }

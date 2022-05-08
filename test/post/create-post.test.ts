@@ -1,11 +1,13 @@
-import { Browser, BrowserContext, chromium, Page } from "playwright";
+import {Browser, BrowserContext, chromium, Page} from "playwright";
 import HomePage from "../../page/home.page";
 import LoginPage from "../../page/login.page";
 import PostEditorPage from "../../page/post-editor.page";
 import PostPage from "../../page/post.page";
 import Env from "../../util/environment";
 
-describe("Create a post", () => {
+import { test, expect } from '@playwright/test';
+
+test.describe("Create a post", () => {
 
     let browser: Browser;
     let context: BrowserContext;
@@ -17,7 +19,7 @@ describe("Create a post", () => {
     let post: PostPage;
     let postEditor: PostEditorPage;
 
-    beforeAll( async () => {
+    test.beforeAll( async () => {
         browser = await chromium.launch({
             headless: Env.headless
         });

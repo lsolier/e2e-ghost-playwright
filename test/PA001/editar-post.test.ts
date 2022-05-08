@@ -5,8 +5,9 @@ import PostEditorPage from "../../page/post-editor.page";
 import PostPage from "../../page/post.page";
 import Env from "../../util/environment";
 
+import { test, expect } from '@playwright/test';
 
-describe("Create a post", () => {
+test.describe("Edit a post", () => {
 
     let browser: Browser;
     let context: BrowserContext;
@@ -18,7 +19,7 @@ describe("Create a post", () => {
     let posts: PostPage;
     let postEditor: PostEditorPage;
 
-    beforeAll( async() => {
+    test.beforeAll( async() => {
         browser = await chromium.launch({
             headless: Env.headless
         });
@@ -32,17 +33,18 @@ describe("Create a post", () => {
         postEditor = new PostEditorPage(page);
     });
 
-    test("should create a post - positive scenario", async () => {
+    test("should edit a post - positive scenario", async () => {
         await login.signInWith(Env.user, Env.pass);
         await home.clickPostsLink();
         expect(page.url()).toBe("http://localhost:2368/ghost/#/posts");
         await posts.clickNewPostLink();
         expect(page.url()).toBe("http://localhost:2368/ghost/#/editor/post");
-        await postEditor.fillPostTitle("TituloPrueba");
-        await postEditor.fillPostContent("ContenidoPrueba");
+        await postEditor.fillPostTitle("Titulo de post utilizando playwright");
+        await postEditor.fillPostContent("Contenido de post utilizando playwright");
         await postEditor.clickPublishLink();
+        await postEditor.clickPublishButton();
         await postEditor.clickPostsLink();
-        expect(await posts.getElePostTitle("TituloPrueba")).toBe(true);
+        expect(await posts.getElePostTitle("Titulo de post utilizando playwright")).toBe(true);
         await browser.close();
     });
 
