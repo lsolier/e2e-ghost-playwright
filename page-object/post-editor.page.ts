@@ -54,12 +54,30 @@ export default class PostEditorPage {
         }
     }
 
+    public get eleScheduleBtn() {
+        const publishButton = this.page.waitForSelector("button.gh-publishmenu-button");
+        if(publishButton != null) {
+            return publishButton;
+        } else {
+            throw new Error("No publishButton element");
+        }
+    }
+
     public get eleViewPost() {
         const viewPost = this.page.$("View Post");
         if(viewPost != null) {
             return viewPost;
         } else {
             throw new Error("No viewPost element");
+        }
+    }
+
+    public get eleScheduleTime() {
+        const scheduleTimeInput = this.page.$("div.gh-date-time-picker-time input");
+        if(scheduleTimeInput != null) {
+            return scheduleTimeInput;
+        } else {
+            throw new Error("No scheduleTimeInput element");
         }
     }
 
@@ -84,9 +102,27 @@ export default class PostEditorPage {
         await publishButton?.click();
     }
 
+    public async clickScheduleButton(){
+        const publishButton = await this.eleScheduleBtn;
+        await publishButton?.click();
+    }
+
     public async clickPostsLink(){
         const postsLink = await this.elePostsLink;
         await postsLink?.click();
+    }
+
+    public async updateTimeToPublish() {
+        await this.page.waitForSelector("div.gh-date-time-picker-time input");
+        const scheduleTime = await this.eleScheduleTime;
+        let currentDate = new Date();
+        let hour = currentDate.getHours();
+        let min = currentDate.getMinutes();
+        let minToPublish = min  + 5;
+        console.log("published for: " + hour + ":" + minToPublish);
+        await scheduleTime?.click();
+        await scheduleTime?.fill(hour + ":" + minToPublish);
+        await this.clickScheduleButton();
     }
 
 }

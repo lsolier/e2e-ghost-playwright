@@ -27,6 +27,16 @@ export default class PostPage {
             throw new Error("No selectedPostTitle element");
         }
     }
+
+    public async postList() {
+        await this.page.waitForSelector(`section ol li`);
+        const pages = await this.page.$$(`section ol li`);
+        if(pages != null) {
+            return pages;
+        } else {
+            throw new Error("No selectedPostTitle element");
+        }
+    }
     
 
     //actuadores
@@ -34,12 +44,29 @@ export default class PostPage {
     public async clickNewPostLink() {
         const ele = await this.eleNewPostLink;
         await ele?.click();
-        await this.page.waitForLoadState();
+        await this.page.waitForURL('**/#/editor/post');
     }
 
     public async getElePostTitle(postTitle:string) {
         const selectedPostTitle = await this.selectedPostTitle(postTitle);
         return selectedPostTitle != null;
+    }
+
+    public async findPageByTitleAndStatus(pageTitle: string, status: string) {
+        const postList = await this.postList();
+        console.log("Total pages: " + postList.length);
+        const allHref = await Promise.all(postList
+            .map(async (post, i) => {
+                const elementText = await post.innerText();
+                if(elementText.includes(pageTitle) && elementText.includes(status)) {
+                    return await post.$("a.gh-post-list-title");
+                }
+            })
+        );
+
+        const filteredAllHref = allHref.filter(elm => elm);
+        console.log("ver: " + await filteredAllHref[0]?.innerText());
+        return filteredAllHref[0];
     }
 
 }

@@ -34,7 +34,7 @@ test.describe("PA001 - ", () => {
         pageEditor = new PageEditorPage(page);
     });
 
-    test("should edit a post - positive scenario", async () => {
+    test("should create and edit a page - positive scenario", async () => {
         //TODO WHEN I log in
         await login.signInWith(Env.user, Env.pass);
         //TODO WHEN I navigate to Page module

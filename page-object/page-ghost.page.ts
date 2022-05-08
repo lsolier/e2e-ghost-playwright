@@ -54,6 +54,22 @@ export default class PageGhostPage {
         return filteredAllHref[0];
     }
 
+    public async findPageByTitleAndStatus(pageTitle: string) {
+        const pagesGhost = await this.pagesList();
+        console.log("Total pages: " + pagesGhost.length);
+        const allHref = await Promise.all(pagesGhost
+            .map(async (pageGhost, i) => {
+                const elementText = await pageGhost.innerText();
+                if(elementText.includes(pageTitle)) {
+                    return await pageGhost.$("a.gh-post-list-title");
+                }
+            })
+        );
+
+        const filteredAllHref = allHref.filter(elm => elm);
+        return filteredAllHref[0];
+    }
+
     public async navigateToEditionLink(link: any) {
         const href = await link.getAttribute("href");
         const formattedHref = href.substring(0,href.length-1)
