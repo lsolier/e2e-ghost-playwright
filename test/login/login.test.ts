@@ -1,5 +1,5 @@
 import {Browser, BrowserContext, chromium, Page} from "playwright";
-import LoginPage from "../../page/login.page";
+import LoginPage from "../../page-object/login.page";
 import Env from "../../util/environment";
 import { test, expect } from '@playwright/test';
 

@@ -1,8 +1,8 @@
 import {Browser, BrowserContext, chromium, Page} from "playwright";
-import HomePage from "../../page/home.page";
-import LoginPage from "../../page/login.page";
-import PostEditorPage from "../../page/post-editor.page";
-import PostPage from "../../page/post.page";
+import HomePage from "../../page-object/home.page";
+import LoginPage from "../../page-object/login.page";
+import PostEditorPage from "../../page-object/post-editor.page";
+import PostPage from "../../page-object/post.page";
 import Env from "../../util/environment";
 
 import { test, expect } from '@playwright/test';

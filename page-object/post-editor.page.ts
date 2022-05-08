@@ -82,7 +82,6 @@ export default class PostEditorPage {
     public async clickPublishButton(){
         const publishButton = await this.elePublishBtn;
         await publishButton?.click();
-
     }
 
     public async clickPostsLink(){
