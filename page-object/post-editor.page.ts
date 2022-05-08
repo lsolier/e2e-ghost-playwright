@@ -36,6 +36,15 @@ export default class PostEditorPage {
         }
     }
 
+    public get eleLeaveButton() {
+        const postsLink = this.page.$("//button[@class='gh-btn gh-btn-red']");
+        if(postsLink != null) {
+            return postsLink;
+        } else {
+            throw new Error("No postsLink element");
+        }
+    }
+
     public get elePublishLink() {
         const publishLink = this.page.locator(`//div[contains(@class, 'gh-btn gh-btn-outline gh-publishmenu-trigger')]`);
         if(publishLink != null) {
@@ -117,6 +126,24 @@ export default class PostEditorPage {
         }
     }
 
+    public get eleDeletePostButton() {
+        const deletePost = this.page.$("button.gh-btn.gh-btn-hover-red.settings-menu-delete-button");
+        if(deletePost != null) {
+            return deletePost;
+        } else {
+            throw new Error("No DeletePostButton element");
+        }
+    }
+
+    public get eleConfirmationDeletePostButton() {
+        const confirmationDeletePost = this.page.$("button.gh-btn.gh-btn-red");
+        if(confirmationDeletePost != null) {
+            return confirmationDeletePost;
+        } else {
+            throw new Error("No ConfirmationDeletePostButton element");
+        }
+    }
+
     public get eleFormSetting() {
         const formSetting = this.page.$("div.settings-menu-container");
         if(formSetting != null) {
@@ -163,6 +190,11 @@ export default class PostEditorPage {
         await postsLink?.click();
     }
 
+    public async clickLeaveButton(){
+        const postsLink = await this.eleLeaveButton;
+        await postsLink?.click();
+    }
+
     public async updateTimeToPublish() {
         await this.page.waitForSelector("div.gh-date-time-picker-time input");
         const scheduleTime = await this.eleScheduleTime;
@@ -204,6 +236,16 @@ export default class PostEditorPage {
         const formSetting = await this.eleFormSetting;
         await formSetting?.evaluate(node => node.setAttribute("style", "display: none"));
         await this.page.waitForSelector("//span[text()='Publish']");
+    }
+
+    public async clickDeletePostButton() {
+        const deleteButton = await this.eleDeletePostButton;
+        await deleteButton?.click();
+    }
+
+    public async clickConfirmationDeletePostButton() {
+        const deleteButton = await this.eleConfirmationDeletePostButton;
+        await deleteButton?.click();
     }
 
 }

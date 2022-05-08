@@ -53,6 +53,7 @@ export default class PostPage {
     }
 
     public async findPageByTitleAndStatus(pageTitle: string, status: string) {
+        await this.page.waitForURL('**/#/posts');
         const postList = await this.postList();
         console.log("Total pages: " + postList.length);
         const allHref = await Promise.all(postList
@@ -67,6 +68,13 @@ export default class PostPage {
         const filteredAllHref = allHref.filter(elm => elm);
         console.log("ver: " + await filteredAllHref[0]?.innerText());
         return filteredAllHref[0];
+    }
+
+    public async navigateToEditionLink(link: any) {
+        const href = await link.getAttribute("href");
+        const formattedHref = href.substring(0,href.length-1)
+        await link.click();
+        await this.page.waitForURL(`**/${formattedHref}`);
     }
 
 }
