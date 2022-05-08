@@ -42,7 +42,25 @@ export default class TagEditorPage {
         if(buttonSave != null) {
             return buttonSave;
         } else {
-            throw new Error("No tag slug element");
+            throw new Error("No button save element");
+        }
+    }
+
+    public get eleDeleteButton() {
+        const buttonDelete = this.page.$("//span[text()='Delete tag']");
+        if(buttonDelete != null) {
+            return buttonDelete;
+        } else {
+            throw new Error("No button delete element");
+        }
+    }
+
+    public get eleConfirmationDeleteButton() {
+        const buttonDelete = this.page.$("//span[text()='Delete']");
+        if(buttonDelete != null) {
+            return buttonDelete;
+        } else {
+            throw new Error("No confirmation button delete element");
         }
     }
 
@@ -76,6 +94,18 @@ export default class TagEditorPage {
         const buttonSave = await this.eleButtonSave;
         await buttonSave?.click();
         await this.page.waitForLoadState();
+    }
+
+    public async clickDeleteButton() {
+        const buttonSave = await this.eleDeleteButton;
+        await buttonSave?.click();
+        await this.page.waitForLoadState();
+    }
+
+    public async clickConfirmationDeleteButton() {
+        const buttonSave = await this.eleConfirmationDeleteButton;
+        await buttonSave?.click();
+        await this.page.waitForURL('**/#/tags');
     }
 
     public async clickTagsLink() {
