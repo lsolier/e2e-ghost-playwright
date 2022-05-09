@@ -171,6 +171,7 @@ export default class PostEditorPage {
     }
 
     public async clickPublishLink(){
+        await this.page.waitForSelector(`//div[contains(@class, 'gh-btn gh-btn-outline gh-publishmenu-trigger')]`);
         const publishLink = await this.elePublishLink;
         await publishLink?.click();
     }

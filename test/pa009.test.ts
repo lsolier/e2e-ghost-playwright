@@ -23,7 +23,7 @@ test.describe("PA009 - ", () => {
         browser = await chromium.launch({
             headless: Env.headless
         });
-        context = await browser.newContext();
+        context = await browser.newContext({ viewport: null });
         page = await context.newPage();
 
         //TODO GIVEN url tol login
@@ -45,7 +45,7 @@ test.describe("PA009 - ", () => {
         await tags.clickNewTagLink();
         expect(page.url()).toContain("/#/tags/new");
 
-        await tagEditor.fillTagName("Nombre tag con playwright");
+        await tagEditor.fillTagName("Nombre tag pa009 con playwright");
         await tagEditor.fillTagSlug("Slug utilizando playwright");
         await tagEditor.fillTagDescription("Descripcion utilizando playwright");
         await tagEditor.clickButtonSave();
@@ -61,7 +61,7 @@ test.describe("PA009 - ", () => {
         await tagEditor.clickConfirmationDeleteButton();
         expect(page.url()).toContain("/#/tags");
 
-        const linkEditedPage = await tags.findPageByTitle("Nombre tag con playwright");
+        const linkEditedPage = await tags.findPageByTitle("Nombre tag pa009 con playwright");
         expect(linkEditedPage).toBeUndefined();
     });
 
