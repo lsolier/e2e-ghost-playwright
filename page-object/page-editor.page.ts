@@ -55,7 +55,7 @@ export default class PageEditorPage {
     }
 
     public get elePublishBtn() {
-        const publishButton = this.page.waitForSelector("button.gh-publishmenu-button");
+        const publishButton = this.page.$("button.gh-publishmenu-button");
         if(publishButton != null) {
             return publishButton;
         } else {
@@ -114,6 +114,7 @@ export default class PageEditorPage {
     }
 
     public async clickPublishButton(){
+        await this.page.waitForSelector("button.gh-publishmenu-button");
         const publishButton = await this.elePublishBtn;
         await publishButton?.click();
     }
@@ -121,9 +122,11 @@ export default class PageEditorPage {
     public async clickUpdateButton(){
         const publishButton = await this.eleUpdateBtn;
         await publishButton?.click();
+        await this.page.waitForSelector("(//span[text()='Updated'])[2]");
     }
 
     public async clickPagesLink(){
+        await this.page.waitForSelector("span.gh-notification-actions");
         const postsLink = await this.elePagesLink;
         await postsLink?.click();
         await this.page.waitForLoadState();
