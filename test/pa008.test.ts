@@ -27,7 +27,7 @@ test.describe("PA008 - ", () => {
         browser = await chromium.launch({
             headless: Env.headless
         });
-        context = await browser.newContext({ viewport: null });
+        context = await browser.newContext({ viewport: { width: 1200, height: 600 } });
         page = await context.newPage();
 
         //TODO GIVEN url tol login
