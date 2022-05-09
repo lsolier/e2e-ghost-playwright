@@ -82,7 +82,7 @@ export default class PostEditorPage {
     }
 
     public get eleViewPost() {
-        const viewPost = this.page.$("View Post");
+        const viewPost = this.page.$("//span[@class='gh-notification-actions']//a[1]");
         if(viewPost != null) {
             return viewPost;
         } else {
@@ -246,6 +246,13 @@ export default class PostEditorPage {
     public async clickConfirmationDeletePostButton() {
         const deleteButton = await this.eleConfirmationDeletePostButton;
         await deleteButton?.click();
+    }
+
+    public async clickViewPostLink() {
+        await this.page.waitForSelector("span.gh-notification-actions");
+        const viewPostLink = await this.eleViewPost;
+        await viewPostLink?.evaluate(node => node.removeAttribute("target"));
+        return await viewPostLink?.click();
     }
 
 }
