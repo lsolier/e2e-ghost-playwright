@@ -185,6 +185,7 @@ export default class PostEditorPage {
     public async clickScheduleButton(){
         const publishButton = await this.eleScheduleBtn;
         await publishButton?.click();
+        await this.page.waitForSelector("(//span[text()='Scheduled'])[2]");
     }
 
     public async clickPostsLink(){
