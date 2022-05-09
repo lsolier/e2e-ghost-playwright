@@ -52,7 +52,7 @@ test.describe("PA009 - ", () => {
         await tagEditor.clickTagsLink();
         expect(page.url()).toContain("/#/tags");
 
-        const linkCreatedTag = await tags.findPageByTitle("Nombre tag con playwright");
+        const linkCreatedTag = await tags.findPageByTitle("Nombre tag pa009 con playwright");
         expect(linkCreatedTag).not.toBeNull();
 
         await tags.navigateToEditionLink(linkCreatedTag);
