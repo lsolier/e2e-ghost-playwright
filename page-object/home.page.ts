@@ -69,6 +69,6 @@ export default class HomePage {
     public async clickStaffLink() {
         const ele = await this.eleStaffLink;
         await ele?.click();
-        await this.page.waitForNavigation();
+        await this.page.waitForSelector("//span[text()='Invite people']");
     }
 }
