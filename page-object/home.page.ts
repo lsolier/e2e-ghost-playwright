@@ -10,6 +10,15 @@ export default class HomePage {
 
     //selectores
 
+    public get eleViewSiteLink() {
+        const viewSiteLink = this.page.$("text='View site'");
+        if(viewSiteLink != null) {
+            return viewSiteLink;
+        } else {
+            throw new Error("No ViewSiteLink element");
+        }
+    }
+
     public get elePostsLink() {
         const postsLink = this.page.$("text='Posts'");
         if(postsLink != null) {
@@ -47,6 +56,12 @@ export default class HomePage {
     }
 
     //actuadores
+
+    public async clickViewSiteLink() {
+        const ele = await this.eleViewSiteLink;
+        await ele?.click();
+        await this.page.waitForURL('**/#/site');
+    }
 
     public async clickPostsLink() {
         const ele = await this.elePostsLink;

@@ -7,7 +7,7 @@ import InviteNewUserPage from "../page-object/invite-new-user.page";
 
 import { test, expect } from '@playwright/test';
 
-test.describe("PA017 - ", () => {
+test.describe("PA018 - ", () => {
 
     let browser: Browser;
     let context: BrowserContext;
@@ -34,25 +34,34 @@ test.describe("PA017 - ", () => {
         inviteNewUser = new InviteNewUserPage(page);
     });
 
-    test("should send invitation and see error message - positive scenario", async () => {
+    test("should send invitation and see error message and revoke invitation - positive scenario", async () => {
         //TODO WHEN I log in
         await login.signInWith(Env.user, Env.pass);
         //TODO WHEN I navigate to Page module
         await home.clickStaffLink();
-        await staff.clickRevokeLinkOfEmail("l.solier@uniandes.edu.co");
         //TODO THEN I expected that url will updated
         expect(page.url()).toContain("/#/staff");
 
         await staff.clickInvitePeopleButton();
 
-        //TODO THEN I complete data for new User and send invitation
-        await inviteNewUser.fillEmailAddress("l.solier@uniandes.edu.co");
+        //TODO WHEN I complete data for new User and send invitation
+        await inviteNewUser.fillEmailAddress("luis.solier@hotmail.com");
         await inviteNewUser.selectRoleByName("Editor");
         await inviteNewUser.clickSendInvitationButton();
 
         //TODO THEN I expected to see error message
         const isErrorMessage = await staff.validateErrorMessageContain("Error sending email!");
         expect(isErrorMessage).toBe(true);
+
+        //TODO WHEN I navigate to View Site
+        await home.clickViewSiteLink();
+        //TODO WHEN I navigate to Page module
+        await home.clickStaffLink();
+        await staff.clickRevokeLinkOfEmail("luis.solier@hotmail.com");
+
+        //TODO THEN I expected email invitation does not exist
+        const invitationExist = await staff.validateInvitationDoesNotExistWithEmail("luis.solier@hotmail.com");
+        expect(invitationExist).toBe(false);
     });
 
     test.afterAll(async () => {
