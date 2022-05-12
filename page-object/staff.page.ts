@@ -46,12 +46,65 @@ export default class StaffPage {
         }
     }
 
+    private async userListDiv() {
+        await this.page.waitForSelector("//div[@class='apps-grid-cell tooltip-centered']");
+        const errorMessageDiv = this.page.$$("//div[@class='apps-grid-cell tooltip-centered']");
+        if(errorMessageDiv != null) {
+            return errorMessageDiv;
+        } else {
+            throw new Error("No InvitationsDiv element");
+        }
+    }
+
     //actuadores
 
     public async clickInvitePeopleButton() {
         const ele = await this.eleInvitePeopleButton;
         await ele?.click();
         await this.page.waitForSelector("//h1[text()='Invite a New User']");
+    }
+
+    public async findUserWithName(name: string) {
+        const userList = await this.userListDiv();
+        console.log("Total users: " + userList.length);
+
+        const allUserLink = await Promise.all(userList
+            .map(async (user, i) => {
+                const elementText = await user.innerText();
+                if(elementText.includes(name)) {
+                    return await user.$("a");
+                }
+            })
+        );
+
+        const filteredAllUserLink = allUserLink.filter(elm => elm);
+        console.log("User name link selected: " + filteredAllUserLink[0]);
+        return filteredAllUserLink[0];
+    }
+
+    public async findUserWithNameAndStatus(name: string, status: string) {
+        const userList = await this.userListDiv();
+        console.log("Total users: " + userList.length);
+
+        const allUserLink = await Promise.all(userList
+            .map(async (user, i) => {
+                const elementText = await user.innerText();
+                if(elementText.includes(name) && elementText.includes(status)) {
+                    return await user.$("a");
+                }
+            })
+        );
+
+        const filteredAllUserLink = allUserLink.filter(elm => elm);
+        console.log("User  name and status link selected: " + filteredAllUserLink[0]);
+        return filteredAllUserLink[0];
+    }
+
+    public async navigateToUserDetailWithLink(link: any) {
+        const href = await link.getAttribute("href");
+        const formattedHref = href.substring(0,href.length-1)
+        await link.click();
+        await this.page.waitForURL(`**/${formattedHref}`);
     }
 
     public async validateErrorMessageContain(text: string) {

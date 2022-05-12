@@ -21,13 +21,13 @@ test.describe("PA002 - ", () => {
 
     test.beforeAll( async() => {
         browser = await chromium.launch({
-            headless: Env.headless
+            headless: Env.HEADLESS
         });
         context = await browser.newContext({ viewport: { width: 1200, height: 600 } });
         page = await context.newPage();
 
         //TODO GIVEN url tol login
-        await page.goto(Env.baseUrl + Env.adminSection);
+        await page.goto(Env.BASE_URL + Env.ADMIN_SECTION);
         login = new LoginPage(page);
         home = new HomePage(page);
         posts = new PostPage(page);
@@ -35,7 +35,7 @@ test.describe("PA002 - ", () => {
     });
 
     test("should schedule a post and validate the creation - positive scenario", async () => {
-        await login.signInWith(Env.user, Env.pass);
+        await login.signInWith(Env.USER, Env.PASS);
         await home.clickPostsLink();
         expect(page.url()).toContain("/#/posts");
         await posts.clickNewPostLink();
@@ -45,7 +45,7 @@ test.describe("PA002 - ", () => {
         await postEditor.clickPublishLink();
         await postEditor.updateTimeToPublish();
         await postEditor.clickPostsLink();
-        const linkScheduledPost = await posts.findPageByTitleAndStatus("Titulo de post programado utilizando playwright", "SCHEDULED");
+        const linkScheduledPost = await posts.findPostByTitleAndStatus("Titulo de post programado utilizando playwright", "SCHEDULED");
         expect(linkScheduledPost).not.toBeNull();
     });
 

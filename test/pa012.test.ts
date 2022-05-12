@@ -7,7 +7,7 @@ import Env from "../util/environment";
 
 import { test, expect } from '@playwright/test';
 
-test.describe("PA013 - ", () => {
+test.describe("PA012 - ", () => {
 
     let browser: Browser;
     let context: BrowserContext;
@@ -34,7 +34,7 @@ test.describe("PA013 - ", () => {
         postEditor = new PostEditorPage(page);
     });
 
-    test("should create post , keep in draft and finally delete post - positive scenario", async () => {
+    test("should create post , keep in draft , edit the created post and publish it - positive scenario", async () => {
         //TODO WHEN I log in
         await login.signInWith(Env.USER, Env.PASS);
         await home.clickPostsLink();
@@ -43,25 +43,30 @@ test.describe("PA013 - ", () => {
         expect(page.url()).toContain("/#/editor/post");
 
         //TODO WHEN I create a post
-        await postEditor.fillPostTitle("Titulo de post utilizando playwright");
+        await postEditor.fillPostTitle("Titulo de post pa012 utilizando playwright");
         await postEditor.fillPostContent("Contenido de post utilizando playwright");
 
         //TODO WHEN I draft the post
         await postEditor.clickPostsLink();
 
         //TODO THEN I expected the post will be draft status
-        const linkDraftPost = await posts.findPostByTitleAndStatus("Titulo de post utilizando playwright", "DRAFT");
+        const linkDraftPost = await posts.findPostByTitleAndStatus("Titulo de post pa012 utilizando playwright", "DRAFT");
         expect(linkDraftPost).not.toBeNull();
 
-        //TODO WHEN I delete the post
+        //TODO WHEN I edit the created post
         await posts.navigateToEditionLink(linkDraftPost);
-        await postEditor.clickSettingButton();
-        await postEditor.clickDeletePostButton();
-        await postEditor.clickConfirmationDeletePostButton();
+        await postEditor.fillPostTitle("Titulo de post pa012 editado utilizando playwright");
+
+        //TODO WHEN I publish the post
+        await postEditor.clickPublishLink();
+        await postEditor.clickPublishButton();
+
+        //TODO WHEN I return to post list
+        await postEditor.clickPostsLink();
 
         //TODO THEN I expected the post will be deleted
-        const linkDeletedPost = await posts.findPostByTitleAndStatus("Titulo de post utilizando playwright", "DRAFT");
-        expect(linkDeletedPost).toBeUndefined();
+        const linkDeletedPost = await posts.findPostByTitleAndStatus("Titulo de post pa012 editado utilizando playwright", "PUBLISHED");
+        expect(linkDeletedPost).not.toBeUndefined();
     });
 
     test.afterAll(async () => {

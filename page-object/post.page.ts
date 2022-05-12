@@ -52,7 +52,7 @@ export default class PostPage {
         return selectedPostTitle != null;
     }
 
-    public async findPageByTitleAndStatus(pageTitle: string, status: string) {
+    public async findPostByTitleAndStatus(pageTitle: string, status: string) {
         await this.page.waitForURL('**/#/posts');
         const postList = await this.postList();
         console.log("Total pages: " + postList.length);

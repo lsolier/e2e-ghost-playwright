@@ -21,13 +21,13 @@ test.describe("PA017 - ", () => {
 
     test.beforeAll( async() => {
         browser = await chromium.launch({
-            headless: Env.headless,
+            headless: Env.HEADLESS,
         });
         context = await browser.newContext({ viewport: { width: 1200, height: 600 } });
         page = await context.newPage();
 
         //TODO GIVEN url tol login
-        await page.goto(Env.baseUrl + Env.adminSection);
+        await page.goto(Env.BASE_URL + Env.ADMIN_SECTION);
         login = new LoginPage(page);
         home = new HomePage(page);
         staff = new StaffPage(page);
@@ -36,7 +36,7 @@ test.describe("PA017 - ", () => {
 
     test("should send invitation and see error message - positive scenario", async () => {
         //TODO WHEN I log in
-        await login.signInWith(Env.user, Env.pass);
+        await login.signInWith(Env.USER, Env.PASS);
         //TODO WHEN I navigate to Page module
         await home.clickStaffLink();
         await staff.clickRevokeLinkOfEmail("l.solier@uniandes.edu.co");

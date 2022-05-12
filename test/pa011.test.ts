@@ -7,7 +7,7 @@ import Env from "../util/environment";
 
 import { test, expect } from '@playwright/test';
 
-test.describe("PA013 - ", () => {
+test.describe("PA011 - ", () => {
 
     let browser: Browser;
     let context: BrowserContext;
@@ -34,7 +34,7 @@ test.describe("PA013 - ", () => {
         postEditor = new PostEditorPage(page);
     });
 
-    test("should create post , keep in draft and finally delete post - positive scenario", async () => {
+    test("should create post and delete post - positive scenario", async () => {
         //TODO WHEN I log in
         await login.signInWith(Env.USER, Env.PASS);
         await home.clickPostsLink();
@@ -43,24 +43,26 @@ test.describe("PA013 - ", () => {
         expect(page.url()).toContain("/#/editor/post");
 
         //TODO WHEN I create a post
-        await postEditor.fillPostTitle("Titulo de post utilizando playwright");
+        await postEditor.fillPostTitle("Titulo de post pa011 utilizando playwright");
         await postEditor.fillPostContent("Contenido de post utilizando playwright");
+        await postEditor.clickPublishLink();
+        await postEditor.clickPublishButton();
 
-        //TODO WHEN I draft the post
+        //TODO WHEN I return to post list
         await postEditor.clickPostsLink();
 
-        //TODO THEN I expected the post will be draft status
-        const linkDraftPost = await posts.findPostByTitleAndStatus("Titulo de post utilizando playwright", "DRAFT");
-        expect(linkDraftPost).not.toBeNull();
+        //TODO THEN I expected the post will be published
+        const linkPublishedPost = await posts.findPostByTitleAndStatus("Titulo de post pa011 utilizando playwright", "PUBLISHED");
+        expect(linkPublishedPost).not.toBeNull();
 
         //TODO WHEN I delete the post
-        await posts.navigateToEditionLink(linkDraftPost);
+        await posts.navigateToEditionLink(linkPublishedPost);
         await postEditor.clickSettingButton();
         await postEditor.clickDeletePostButton();
         await postEditor.clickConfirmationDeletePostButton();
 
         //TODO THEN I expected the post will be deleted
-        const linkDeletedPost = await posts.findPostByTitleAndStatus("Titulo de post utilizando playwright", "DRAFT");
+        const linkDeletedPost = await posts.findPostByTitleAndStatus("Titulo de post pa011 utilizando playwright", "PUBLISHED");
         expect(linkDeletedPost).toBeUndefined();
     });
 

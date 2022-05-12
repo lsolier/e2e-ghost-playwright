@@ -204,16 +204,12 @@ export default class PostEditorPage {
         let currentDate = new Date();
         let hour = currentDate.getHours();
         let min = currentDate.getMinutes();
-        let minToPublish = min  + 5;
-        console.log("published for: " + hour + ":" + this.PadLeft(minToPublish, 2));
+        let minToPublish = min  + 10;
+        let minToPublishFormatted = minToPublish.toString().padStart(2, '0');
+        console.log("published for: " + hour + ":" + minToPublishFormatted);
         await scheduleTime?.click();
         await scheduleTime?.fill(hour + ":" + minToPublish);
         await this.clickScheduleButton();
-    }
-
-    private PadLeft(value: any, length: number) : any {
-        return (value.toString().length < length) ? this.PadLeft("0" + value, length) :
-            value;
     }
 
     public async selectTagWithName(tagName: string) {

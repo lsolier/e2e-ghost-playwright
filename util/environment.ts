@@ -1,7 +1,8 @@
 export default class Env {
-    public static baseUrl: string = "http://localhost:2368/ghost";
-    public static adminSection: string = "/#/signin";
-    public static user:string = "luis.sajami@gmail.com";
-    public static pass:string = "Uniandes123456";
-    public static headless:boolean = false;
+    public static BASE_URL: string = "http://localhost:2368/ghost";
+    public static ADMIN_SECTION: string = "/#/signin";
+    public static USER:string = "luis.sajami@gmail.com";
+    public static PASS:string = "Uniandes123456";
+    public static HEADLESS:boolean = false;
+    public static SCREENSHOT_FOLDER:string = "./screenshots/";
 }
