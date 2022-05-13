@@ -34,13 +34,31 @@ test.describe("PA020 - ", () => {
         staffEditor = new StaffEditorPage(page);
     });
 
-    test("should suspend user, verify if user is suspended and finally un-suspend the user - positive scenario", async () => {
+    test.beforeEach( async() => {
         //TODO WHEN I log in
         await login.signInWith(Env.USER, Env.PASS);
         //TODO WHEN I navigate to Page module
         await home.clickStaffLink();
         //TODO THEN I expected that url will updated
         expect(page.url()).toContain("/#/staff");
+
+        const userSuspendedLinkFound = await staff.findUserWithNameAndStatus("Ghost", "SUSPENDED");
+        if ( !(typeof userSuspendedLinkFound === 'undefined')) {
+            //TODO WHEN I navigate to user detail to suspend
+            await staff.navigateToUserDetailWithLink(userSuspendedLinkFound);
+
+            //TODO WHEN I suspend user
+            await staffEditor.clickUserUnSuspendConfigurationButton();
+            await staffEditor.clickUnSuspendUserButton()
+            await staffEditor.clickUnSuspendUserConfirmationButton();
+
+            //TODO WHEN I navigate to Page module
+            await home.clickStaffLink();
+
+        }
+    } )
+
+    test("should suspend user, verify if user is suspended and finally un-suspend the user - positive scenario", async () => {
 
         //TODO WHEN I select guest user and expect found it
         const userLinkFound = await staff.findUserWithName("Ghost");

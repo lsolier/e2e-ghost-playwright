@@ -55,9 +55,19 @@ export default class StaffPage {
         }
     }
 
-    private async userListDiv() {
+    private async activeUserListDiv() {
         await this.page.waitForSelector("//div[@class='apps-grid-cell tooltip-centered']");
-        const errorMessageDiv = this.page.$$("//div[@class='apps-grid-cell tooltip-centered']");
+        const elements = this.page.$$("//section[@class='apps-grid-container gh-active-users ' and ./span/text()='Active users' ]//div//div[@class='apps-grid-cell tooltip-centered']");
+        if(elements != null) {
+            return elements;
+        } else {
+            throw new Error("No InvitationsDiv element");
+        }
+    }
+
+    private async suspendedUserListDiv() {
+        await this.page.waitForSelector("//div[@class='apps-grid-cell tooltip-centered']");
+        const errorMessageDiv = this.page.$$("//section[@class='apps-grid-container gh-active-users' and ./span/text()='Suspended users']//div//div[@class='apps-grid-cell tooltip-centered']");
         if(errorMessageDiv != null) {
             return errorMessageDiv;
         } else {
@@ -74,7 +84,7 @@ export default class StaffPage {
     }
 
     public async findUserWithName(name: string) {
-        const userList = await this.userListDiv();
+        const userList = await this.activeUserListDiv();
         console.log("Total users: " + userList.length);
 
         const allUserLink = await Promise.all(userList
@@ -92,11 +102,22 @@ export default class StaffPage {
     }
 
     public async findUserWithNameAndStatus(name: string, status: string) {
-        const userList = await this.userListDiv();
-        console.log("Total users: " + userList.length);
+        let userList: any;
+        switch(status) {
+            case 'SUSPENDED': {
+                userList = await this.suspendedUserListDiv();
+                break;
+            }
+            default: {
+                userList = await this.activeUserListDiv();
+                break;
+            }
+        }
+
+        console.log("Total users name and status: " + userList.length);
 
         const allUserLink = await Promise.all(userList
-            .map(async (user, i) => {
+            .map(async (user: any, i: any) => {
                 const elementText = await user.innerText();
                 if(elementText.includes(name) && elementText.includes(status)) {
                     return await user.$("a");
