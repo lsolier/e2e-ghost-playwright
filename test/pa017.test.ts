@@ -40,6 +40,7 @@ test.describe("PA017 - ", () => {
         //TODO WHEN I navigate to Page module
         await home.clickStaffLink();
         await staff.clickRevokeLinkOfEmail("l.solier@uniandes.edu.co");
+
         //TODO THEN I expected that url will updated
         expect(page.url()).toContain("/#/staff");
 

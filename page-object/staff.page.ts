@@ -36,6 +36,15 @@ export default class StaffPage {
         }
     }
 
+    public get invitedUserTitle() {
+        const ele = this.page.$("//span[text()='Invited users']");
+        if(ele != null) {
+            return ele;
+        } else {
+            throw new Error("No invitedUserTitle element");
+        }
+    }
+
     private async listInvitationsDiv() {
         await this.page.waitForSelector("//div[@class='apps-grid-cell']");
         const errorMessageDiv = this.page.$$("//div[@class='apps-grid-cell']");
@@ -115,37 +124,47 @@ export default class StaffPage {
     }
 
     public async clickRevokeLinkOfEmail(email: string) {
-        const listInvitations = await this.listInvitationsDiv();
-        console.log("Total invitations: " + listInvitations.length);
+       const invitedUserTitle = await this.invitedUserTitle;
+        if(invitedUserTitle) {
+            const listInvitations = await this.listInvitationsDiv();
+            console.log("Total invitations: " + listInvitations.length);
 
-        const allRevokes = await Promise.all(listInvitations
-            .map(async (invitation, i) => {
-                const elementText = await invitation.innerText();
-                if(elementText.includes(email)) {
-                    return await invitation.$("//a[text()[normalize-space()='Revoke']]");
-                }
-            })
-        );
+            const allRevokes = await Promise.all(listInvitations
+                .map(async (invitation, i) => {
+                    const elementText = await invitation.innerText();
+                    if(elementText.includes(email)) {
+                        return await invitation.$("//a[text()[normalize-space()='Revoke']]");
+                    }
+                })
+            );
 
-        const filteredAllRevokes = allRevokes.filter(elm => elm);
-        if(filteredAllRevokes[0]?.getAttribute('onclick')!=null){
-            await filteredAllRevokes[0]?.click();
-            await this.page.waitForSelector("//span[text()='Invitation revoked']");
+            const filteredAllRevokes = allRevokes.filter(elm => elm);
+            if(filteredAllRevokes[0]?.getAttribute('onclick')!=null){
+                await filteredAllRevokes[0]?.click();
+                await this.page.waitForSelector("//span[text()='Invitation revoked']");
+            }
         }
+
+
 
     }
 
     public async validateInvitationDoesNotExistWithEmail(email: string) {
-        const listInvitations = await this.listInvitationsDiv();
+        const invitedUserTitle = await this.invitedUserTitle;
+        if (invitedUserTitle) {
+            const listInvitations = await this.listInvitationsDiv();
 
-        const isInvitationFound = await Promise.all(listInvitations
-            .map(async (invitation, i) => {
-                const elementText = await invitation.innerText();
-                return await elementText.includes(email);
-            })
-        );
+            const isInvitationFound = await Promise.all(listInvitations
+                .map(async (invitation, i) => {
+                    const elementText = await invitation.innerText();
+                    return await elementText.includes(email);
+                })
+            );
 
-        console.log("esto: "+ isInvitationFound);
-        return isInvitationFound.some(ele => ele);
+            console.log("esto: "+ isInvitationFound);
+            return isInvitationFound.some(ele => ele);
+        }
+        return false;
+
     }
 }
