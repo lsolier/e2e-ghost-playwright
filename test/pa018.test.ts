@@ -60,7 +60,7 @@ test.describe("PA018 - ", () => {
         await staff.clickRevokeLinkOfEmail("luis.solier@hotmail.com");
 
         //TODO THEN I expected email invitation does not exist
-        const invitationExist = await staff.validateInvitationDoesNotExistWithEmail("luis.solier@hotmail.com");
+        const invitationExist = await staff.validateIfIsThereInvitationWithEmail("luis.solier@hotmail.com");
         expect(invitationExist).toBe(false);
     });
 

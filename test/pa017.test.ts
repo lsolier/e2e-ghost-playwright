@@ -52,8 +52,8 @@ test.describe("PA017 - ", () => {
         await inviteNewUser.clickSendInvitationButton();
 
         //TODO THEN I expected to see error message
-        const isErrorMessage = await staff.validateErrorMessageContain("Error sending email!");
-        expect(isErrorMessage).toBe(true);
+        const isThereErrorMessage = await staff.validateErrorMessageContain("Error sending email!");
+        expect(isThereErrorMessage).toBe(true);
     });
 
     test.afterAll(async () => {

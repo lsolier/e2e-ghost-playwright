@@ -170,7 +170,7 @@ export default class StaffPage {
 
     }
 
-    public async validateInvitationDoesNotExistWithEmail(email: string) {
+    public async validateIfIsThereInvitationWithEmail(email: string) {
         const invitedUserTitle = await this.invitedUserTitle;
         if (invitedUserTitle) {
             const listInvitations = await this.listInvitationsDiv();
