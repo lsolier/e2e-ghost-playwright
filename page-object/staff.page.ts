@@ -145,7 +145,8 @@ export default class StaffPage {
     }
 
     public async clickRevokeLinkOfEmail(email: string) {
-       const invitedUserTitle = await this.invitedUserTitle;
+        await this.page.waitForSelector("//span[text()='Active users']");
+        const invitedUserTitle = await this.invitedUserTitle;
         if(invitedUserTitle) {
             const listInvitations = await this.listInvitationsDiv();
             console.log("Total invitations: " + listInvitations.length);
