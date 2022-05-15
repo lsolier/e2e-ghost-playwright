@@ -55,6 +55,15 @@ export default class HomePage {
         }
     }
 
+    public get eleDesignLink() {
+        const staffLink = this.page.$("text='Design'");
+        if(staffLink != null) {
+            return staffLink;
+        } else {
+            throw new Error("No staffLink element");
+        }
+    }
+
     //actuadores
 
     public async clickViewSiteLink() {
@@ -85,5 +94,11 @@ export default class HomePage {
         const ele = await this.eleStaffLink;
         await ele?.click();
         await this.page.waitForSelector("//span[text()='Invite people']");
+    }
+
+    public async clickDesignLink() {
+        const ele = await this.eleDesignLink;
+        await ele?.click();
+        await this.page.waitForSelector("//div[text()='Theme Directory']");
     }
 }
