@@ -93,7 +93,7 @@ export default class TagEditorPage {
     public async clickButtonSave() {
         const buttonSave = await this.eleButtonSave;
         await buttonSave?.click();
-        await this.page.waitForLoadState();
+        await this.page.waitForSelector("//span[text()='Saved']");
     }
 
     public async clickDeleteButton() {
