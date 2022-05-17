@@ -75,7 +75,7 @@ export default class StaffEditorPage {
     }
 
     public get eleCurrentPasswordInput() {
-        const currentPasswordInput = this.page.$("//input[@autocomplete='current-password']");
+        const currentPasswordInput = this.page.locator("//input[@autocomplete='current-password']");
         if(currentPasswordInput != null) {
             return currentPasswordInput;
         } else {
@@ -84,7 +84,7 @@ export default class StaffEditorPage {
     }
 
     public get eleNewPasswordInput() {
-        const newPasswordInput = this.page.$("//input[@autocomplete='new-password']");
+        const newPasswordInput = this.page.locator("//input[@autocomplete='new-password']");
         if(newPasswordInput != null) {
             return newPasswordInput;
         } else {
@@ -93,7 +93,7 @@ export default class StaffEditorPage {
     }
 
     public get elePasswordVerificationInput() {
-        const passwordVerificationInput = this.page.$("//input[@id='user-new-password-verification']");
+        const passwordVerificationInput = this.page.locator("//input[@id='user-new-password-verification']");
         if(passwordVerificationInput != null) {
             return passwordVerificationInput;
         } else {
@@ -103,7 +103,7 @@ export default class StaffEditorPage {
 
     public get eleEmailInput() {
         //input[name*="email"]
-        const emailInput = this.page.$("//input[@name='email']");
+        const emailInput = this.page.locator("//input[@name='email']");
         if(emailInput != null) {
             return emailInput;
         } else {
