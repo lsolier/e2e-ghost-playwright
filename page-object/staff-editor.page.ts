@@ -55,6 +55,91 @@ export default class StaffEditorPage {
         }
     }
 
+    public get eleSavedPasswordButton() {
+        const ele = this.page.$("//button[text()='Saved']");
+        if(ele != null) {
+            return ele;
+        } else {
+            throw new Error("No Saved password element");
+        }
+    }
+
+    public get eleChangePasswordButton() {
+        const ele = this.page.$("//span[text()='Change Password']");
+        //const ele = this.page.$("//button[text()[normalize-space()='Change Password']]");
+        if(ele != null) {
+            return ele;
+        } else {
+            throw new Error("No change password button element");
+        }
+    }
+
+    public get eleCurrentPasswordInput() {
+        const currentPasswordInput = this.page.$("//input[@autocomplete='current-password']");
+        if(currentPasswordInput != null) {
+            return currentPasswordInput;
+        } else {
+            throw new Error("No current password input element");
+        }
+    }
+
+    public get eleNewPasswordInput() {
+        const newPasswordInput = this.page.$("//input[@autocomplete='new-password']");
+        if(newPasswordInput != null) {
+            return newPasswordInput;
+        } else {
+            throw new Error("No new password input element");
+        }
+    }
+
+    public get elePasswordVerificationInput() {
+        const passwordVerificationInput = this.page.$("//input[@id='user-new-password-verification']");
+        if(passwordVerificationInput != null) {
+            return passwordVerificationInput;
+        } else {
+            throw new Error("No password verification input element");
+        }
+    }
+
+    public get eleEmailInput() {
+        //input[name*="email"]
+        const emailInput = this.page.$("//input[@name='email']");
+        if(emailInput != null) {
+            return emailInput;
+        } else {
+            throw new Error("No email input element");
+        }
+    }
+
+    public get eleNotificationCloseButton() {
+        //cy.get('button[class*="gh-notification-close"]').click()
+        const ele = this.page.$("//button[@class='gh-notification-close']");
+        //const ele = this.page.$("//button[text()[normalize-space()='Change Password']]");
+        if(ele != null) {
+            return ele;
+        } else {
+            throw new Error("No Close notification button element");
+        }
+    }
+
+    public get eleSaveButton() {
+        const ele = this.page.$("//span[text()='Save']");
+        if(ele != null) {
+            return ele;
+        } else {
+            throw new Error("No Save button element");
+        }
+    }
+
+    public get eleSavedButton() {
+        const ele = this.page.$("//button[text()='Saved']");
+        if(ele != null) {
+            return ele;
+        } else {
+            throw new Error("No Saved button element");
+        }
+    }
+
     //actuadores
 
     public async clickUserSuspendConfigurationButton(){
@@ -91,6 +176,47 @@ export default class StaffEditorPage {
         const suspendUserConfirmationBtn = await this.eleUnSuspendUserConfirmationButton;
         await suspendUserConfirmationBtn?.click();
         await this.page.waitForSelector("//span[text()='Saved']")
+    }
+
+    public async fillCurrentPaswordInput(password: string) {
+        const currentPassInput = await this.eleCurrentPasswordInput;
+        await currentPassInput?.fill(password);
+    }
+
+    public async fillNewPasswordInput(password: string) {
+        //await new Promise(r => setTimeout(r, 500));
+        const newPassInput = await this.eleNewPasswordInput;
+        await newPassInput?.fill(password);
+    }
+
+    public async fillPasswordVerificationInput(password: string) {
+        //await new Promise(r => setTimeout(r, 500));
+        const passVerificationInput = await this.elePasswordVerificationInput;
+        await passVerificationInput?.fill(password);
+    }
+
+    public async clickChangePasswordButton() {
+        //await new Promise(r => setTimeout(r, 500));
+        const changePasswordButton = await this.eleChangePasswordButton;
+        await changePasswordButton?.click();
+        await this.eleSaveButton;
+        await this.page.waitForSelector("//span[text()='Password updated']");
+    }
+
+    public async clickSaveButton() {
+        const saveButton = await this.eleSaveButton;
+        await saveButton?.click();
+        await this.eleSavedButton;
+    }
+
+    public async refillEmail(email:string) {
+        const emailInput = await this.eleEmailInput;
+        await emailInput?.fill(email);
+    }
+
+    public async clickCloseNotification() {
+        const notificationCloseBtn = await this.eleNotificationCloseButton;
+        await notificationCloseBtn?.click();
     }
 
 }

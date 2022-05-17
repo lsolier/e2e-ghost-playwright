@@ -10,7 +10,7 @@ export default class PageEditorPage {
     //selectores
 
     public get eleTitle() {
-        const title = this.page.$("textarea[placeholder='Page Title']");
+        const title = this.page.locator("//textarea[@placeholder='Page title'] | //textarea[@placeholder='Page Title']");
         if(title != null) {
             return title;
         } else {
@@ -37,7 +37,7 @@ export default class PageEditorPage {
     }
 
     public get elePublishLink() {
-        const publishLink = this.page.locator(`//div[contains(@class, 'gh-btn gh-btn-outline gh-publishmenu-trigger')]`);
+        const publishLink = this.page.locator("//span[contains(.,'Publish')]");
         if(publishLink != null) {
             return publishLink;
         } else {
@@ -46,7 +46,7 @@ export default class PageEditorPage {
     }
 
     public get eleUpdateLink() {
-        const publishLink = this.page.$(`//div[contains(@class, 'gh-btn gh-btn-outline gh-publishmenu-trigger')]`);
+        const publishLink = this.page.locator("//span[contains(.,'Update')]");
         if(publishLink != null) {
             return publishLink;
         } else {
@@ -91,7 +91,7 @@ export default class PageEditorPage {
     }
 
     public get eleSettingButton() {
-        const ele = this.page.$("//button[@title='Settings']");
+        const ele = this.page.locator("//button[@title='Settings']");
         if(ele != null) {
             return ele;
         } else {
@@ -127,7 +127,7 @@ export default class PageEditorPage {
     }
 
     public get eleDeletePageButton() {
-        const deletePost = this.page.$("button.gh-btn.gh-btn-hover-red.settings-menu-delete-button");
+        const deletePost = this.page.locator("//span[contains(., 'Delete page')]");
         if(deletePost != null) {
             return deletePost;
         } else {
@@ -144,6 +144,51 @@ export default class PageEditorPage {
         }
     }
 
+    public get eleSettingsButton() {
+        const buttonSettings = this.page.$("//button[@title='Settings']");
+        if(buttonSettings != null) {
+            return buttonSettings;
+        } else {
+            throw new Error("No settings Button element");
+        }
+    }
+
+    public get elePageUrlInput() {
+        const pageUrlInput = this.page.$("input[name='post-setting-slug']");
+        if(pageUrlInput != null) {
+            return pageUrlInput;
+        } else {
+            throw new Error("No page URL input element");
+        }
+    }
+
+    public get eleDeleteButton() {
+        const buttonDelete = this.page.$("//span[contains(text(),'Delete')]");
+        if(buttonDelete != null) {
+            return buttonDelete;
+        } else {
+            throw new Error("No button delete element");
+        }
+    }
+
+    public get eleConfirmDeleteButton() {
+        const buttonDelete = this.page.$("//span[text()='Delete']");
+        if(buttonDelete != null) {
+            return buttonDelete;
+        } else {
+            throw new Error("No delete confirmation Button element");
+        }
+    }
+
+    public get eleCloseSettingsButton() {
+        const buttonDelete = this.page.$("//button[@aria-label='Close']");
+        if(buttonDelete != null) {
+            return buttonDelete;
+        } else {
+            throw new Error("No close settings button");
+        }
+    }
+
     //actuadores
     public async fillPageTitle(title:string){
         const titleArea = await this.eleTitle;
@@ -156,13 +201,13 @@ export default class PageEditorPage {
     }
 
     public async clickPublishLink(){
-        await this.page.waitForSelector(`//div[contains(@class, 'gh-btn gh-btn-outline gh-publishmenu-trigger')]`);
+        //await this.page.waitForSelector(`//div[contains(@class, 'gh-btn gh-btn-outline gh-publishmenu-trigger')]`);
         const publishLink = await this.elePublishLink;
         await publishLink?.click();
     }
 
     public async clickUpdateLink(){
-        await this.page.waitForSelector("div.gh-btn.gh-btn-outline.gh-publishmenu-trigger");
+        //await this.page.waitForSelector("div.gh-btn.gh-btn-outline.gh-publishmenu-trigger");
         const publishLink = await this.eleUpdateLink;
         await publishLink?.click();
     }
@@ -230,6 +275,34 @@ export default class PageEditorPage {
         await this.clickSettingButton();
         await this.clickDeletePageButton();
         await this.clickConfirmationDeletePostButton();
+    }
+
+    public async clickSettingsButton() {
+        const buttonSave = await this.eleSettingsButton;
+        await buttonSave?.click();
+    }
+
+    public async refillPageUrlField(url:string){
+        const pageUrlInput = await this.elePageUrlInput;
+        //await pageUrlInput?.fill('');
+        await pageUrlInput?.fill(url);
+    }
+
+    public async clickDeleteButton() {
+        const buttonSave = await this.eleDeleteButton;
+        await buttonSave?.scrollIntoViewIfNeeded();
+        await buttonSave?.click();
+        await this.page.waitForLoadState();
+    }
+
+    public async clickConfirmDeleteButton() {
+        const buttonSave = await this.eleConfirmDeleteButton;
+        await buttonSave?.click();
+    }
+
+    public async clickCloseSettingsButton() {
+        const closeSettingsButton = await this.eleCloseSettingsButton;
+        await closeSettingsButton?.click();
     }
 
 }

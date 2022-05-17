@@ -10,7 +10,7 @@ export default class PostEditorPage {
     //selectores
 
     public get eleTitle() {
-        const title = this.page.$("textarea[placeholder='Post Title']");
+        const title = this.page.$("//textarea[@placeholder='Post title'] | //textarea[@placeholder='Post Title']");
         if(title != null) {
             return title;
         } else {
@@ -46,7 +46,7 @@ export default class PostEditorPage {
     }
 
     public get elePublishLink() {
-        const publishLink = this.page.locator(`//div[contains(@class, 'gh-btn gh-btn-outline gh-publishmenu-trigger')]`);
+        const publishLink = this.page.locator("//span[contains(.,'Publish')]");
         if(publishLink != null) {
             return publishLink;
         } else {
@@ -64,7 +64,7 @@ export default class PostEditorPage {
     }
 
     public get elePublishBtn() {
-        const publishButton = this.page.waitForSelector("button.gh-publishmenu-button");
+        const publishButton = this.page.locator("button.gh-publishmenu-button");
         if(publishButton != null) {
             return publishButton;
         } else {
@@ -153,6 +153,15 @@ export default class PostEditorPage {
         }
     }
 
+    public get eleScheduleRadioButton() {
+        const scheduleRadioBtn = this.page.locator("//div[text()='Schedule it for later']");
+        if (scheduleRadioBtn != null) {
+            return scheduleRadioBtn;
+        } else {
+            throw new Error("No scheduleRadioBtn element");
+        }
+    }
+
     //actuadores
     public async fillPostTitle(title:string){
         const titleArea = await this.eleTitle;
@@ -185,7 +194,6 @@ export default class PostEditorPage {
     public async clickScheduleButton(){
         const publishButton = await this.eleScheduleBtn;
         await publishButton?.click();
-        await this.page.waitForSelector("(//span[text()='Scheduled'])[2]");
     }
 
     public async clickPostsLink(){
@@ -198,18 +206,16 @@ export default class PostEditorPage {
         await postsLink?.click();
     }
 
+    public async clickScheduleRadioButton() {
+        const scheduleRadioButton = await this.eleScheduleRadioButton;
+        await scheduleRadioButton?.click();
+    }
+
     public async updateTimeToPublish() {
         await this.page.waitForSelector("div.gh-date-time-picker-time input");
-        const scheduleTime = await this.eleScheduleTime;
-        let currentDate = new Date();
-        let hour = currentDate.getHours();
-        let min = currentDate.getMinutes();
-        let minToPublish = min  + 10;
-        let minToPublishFormatted = minToPublish.toString().padStart(2, '0');
-        console.log("published for: " + hour + ":" + minToPublishFormatted);
-        await scheduleTime?.click();
-        await scheduleTime?.fill(hour + ":" + minToPublish);
+        await this.clickScheduleRadioButton();
         await this.clickScheduleButton();
+        await this.page.waitForSelector("(//span[text()='Scheduled'])[2]");
     }
 
     public async selectTagWithName(tagName: string) {

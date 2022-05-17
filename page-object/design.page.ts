@@ -42,6 +42,43 @@ export default class DesignPage {
         }
     }
 
+    /*public get eleClosePopup() {
+        const loginBtn = this.page.waitForSelector("//button[@class='gh-notification-close']");
+        if(loginBtn != null) {
+            return loginBtn;
+        } else {
+            throw new Error("No eleClosePopup element");
+        }
+    }*/
+
+    public get eleNewLabelInputField() {
+        const newLabelInput = this.page.$("(//form[@id='settings-navigation']//input[@placeholder='Label'])[last()]");
+        if(newLabelInput != null) {
+            return newLabelInput;
+        } else {
+            throw new Error("No new label input element");
+        }
+    }
+
+    public get eleNewLinkInputField() {
+        const newLinkInput = this.page.$("(//form[@id='settings-navigation']//input)[last()]");
+        if(newLinkInput != null) {
+            return newLinkInput;
+        } else {
+            throw new Error("No new link input element");
+        }
+    }
+
+    public get eleDeleteLastNavItemBtn() {
+        const deleteLastNavItemBtn = this.page.$("(//form[@id='settings-navigation']//button[@class='gh-blognav-delete'])[last()]");
+        if(deleteLastNavItemBtn != null) {
+            return deleteLastNavItemBtn;
+        } else {
+            throw new Error("No Delete nav item button");
+        }
+    }
+
+
     //ACCIONADORES
 
     public async fillLabelForNewNav(title: string) {
@@ -108,4 +145,25 @@ export default class DesignPage {
 
         await this.clickSaveButton();
     }
+
+    public async fillNewLabelInput(labelName: string) {
+        const newLabelInput = await this.eleNewLabelInputField;
+        await newLabelInput?.fill(labelName);
+    }
+
+    public async fillNewLinkInput(linkPath: string) {
+        const newLinkInput = await this.eleNewLinkInputField;
+        await newLinkInput?.fill(linkPath);
+    }
+
+    /*public async clickClosePopup() {
+        const ele = await this.eleClosePopup;
+        await ele?.click();
+    }*/
+
+    public async clickDeleteLastNavItemButton() {
+        const ele = await this.eleDeleteLastNavItemBtn;
+        await ele?.click();
+    }
+
 }
