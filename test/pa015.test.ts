@@ -56,9 +56,9 @@ test.describe("PA015: Verificar cambio de contraseña exitoso", () => {
         //When I change the password
         await staffEditorPage.fillCurrentPaswordInput(Env.PASS);
         await page.screenshot({path: utilities.generateScreenshotPath(screenshotNumber++)});
-        await staffEditorPage.fillNewPasswordInput('WhatABeautifulDay123');
+        await staffEditorPage.fillNewPasswordInput('PruebasAutomatizadas123');
         await page.screenshot({path: utilities.generateScreenshotPath(screenshotNumber++)});
-        await staffEditorPage.fillPasswordVerificationInput('WhatABeautifulDay123');
+        await staffEditorPage.fillPasswordVerificationInput('PruebasAutomatizadas123');
         await page.screenshot({path: utilities.generateScreenshotPath(screenshotNumber++)});
         await staffEditorPage.clickChangePasswordButton();
         //await new Promise(r => setTimeout(r, 1500));
@@ -83,7 +83,7 @@ test.describe("PA015: Verificar cambio de contraseña exitoso", () => {
         //Then the new password will work
         await login.reenterEmailAddress(Env.USER);
         await page.screenshot({path: utilities.generateScreenshotPath(screenshotNumber++)});
-        await login.reenterPassword('WhatABeautifulDay123');
+        await login.reenterPassword('PruebasAutomatizadas123');
         await page.screenshot({path: utilities.generateScreenshotPath(screenshotNumber++)});
         await login.clickRetry();
         await new Promise(r => setTimeout(r, 2000));
@@ -93,7 +93,7 @@ test.describe("PA015: Verificar cambio de contraseña exitoso", () => {
     test.afterAll(async () => {
         await home.clickUserMenu();
         await home.clickUserProfileLink();
-        await staffEditorPage.fillCurrentPaswordInput('WhatABeautifulDay123');
+        await staffEditorPage.fillCurrentPaswordInput('PruebasAutomatizadas123');
         await staffEditorPage.fillNewPasswordInput(Env.PASS);
         await staffEditorPage.fillPasswordVerificationInput(Env.PASS);
         await staffEditorPage.clickChangePasswordButton();

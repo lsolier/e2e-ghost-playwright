@@ -47,7 +47,7 @@ test.describe("PA016: Verificar cambio de e-mail exitoso", () => {
         await home.clickUserProfileLink();
         await staffEditorPage.eleSaveButton;
         await page.screenshot({path: utilities.generateScreenshotPath(screenshotNumber++)});
-        await staffEditorPage.refillEmail('marcos@fakemail.co');
+        await staffEditorPage.refillEmail('pepito@mail.com');
         await page.screenshot({path: utilities.generateScreenshotPath(screenshotNumber++)});
         await staffEditorPage.clickSaveButton();
         await new Promise(r => setTimeout(r, 1500));
@@ -70,7 +70,7 @@ test.describe("PA016: Verificar cambio de e-mail exitoso", () => {
         await new Promise(r => setTimeout(r, 1000));
         await page.screenshot({path: utilities.generateScreenshotPath(screenshotNumber++)});
         //Then the new email will work
-        await login.reenterEmailAddress('marcos@fakemail.co');
+        await login.reenterEmailAddress('pepito@mail.com');
         await page.screenshot({path: utilities.generateScreenshotPath(screenshotNumber++)});
         await login.reenterPassword(Env.PASS);
         await page.screenshot({path: utilities.generateScreenshotPath(screenshotNumber++)});
